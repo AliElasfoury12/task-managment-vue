@@ -2,14 +2,14 @@
     <form 
 		@input="validateInput"
 		@submit.prevent="submitForm" 
-		class="register-form">
-        <h2>Login</h2>
+		:class="classes.form">
+        <h1 class="text-3xl">Login</h1>
 
         <EmailInput :form="form" :errors="errors" />
 
        	<PasswordInput :form="form" :errors="errors"/>
 
-        <button :disabled="loading">
+        <button :disabled="loading" :class="classes.submitButton">
             {{ loading ? "Login..." : "Login" }}
         </button>
     </form>
@@ -17,12 +17,13 @@
 
 <script setup>
 	import { ref } from "vue";
-	import EmailInput from "./EmailInput.vue";
-	import PasswordInput from "./PasswordInput.vue";
+	import EmailInput from "../inputs/auth/EmailInput.vue";
+	import PasswordInput from "../inputs/auth/PasswordInput.vue";
 	import {Post} from '../../utils/APIMethods'
 	import { EndPoints } from "../../data/EndPoints";
 	import { formValdaitor } from "../../utils/FormValdation";
 	import { emptyObject } from "../../utils/objects";
+	import { classes } from "../../data/classes";
 
 	const form = ref({
 	email: "",
@@ -60,24 +61,3 @@
 		loading.value = false;
 	}
 </script>
-
-<style scoped>
-.register-form {
-  max-width: 400px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-.field {
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-}
-small {
-  color: red;
-}
-button {
-  padding: 10px;
-  cursor: pointer;
-}
-</style>

@@ -2,8 +2,8 @@
     <form 
 		@input="validateInput"
 		@submit.prevent="submitForm" 
-		class="register-form">
-        <h2>Register</h2>
+		:class="classes.form">
+        <h1 class="text-3xl" >Register</h1>
 
       	<NameInput :form="form" :errors="errors"/>
 
@@ -13,7 +13,7 @@
 
         <PasswordConfirm :form="form" :errors="errors"/>
 
-        <button :disabled="loading">
+        <button :disabled="loading" :class="classes.submitButton" >
             {{ loading ? "Registering..." : "Register" }}
         </button>
     </form>
@@ -21,14 +21,20 @@
 
 <script setup>
 	import { ref } from "vue";
-	import EmailInput from "../inputs/EmailInput.vue";
-	import PasswordInput from "../inputs/PasswordInput.vue";
+	import NameInput from "../inputs/auth/NameInput.vue";
+	import EmailInput from "../inputs/auth/EmailInput.vue";
+	import PasswordInput from "../inputs/auth/PasswordInput.vue";
+	import PasswordConfirm from "../inputs/auth/PasswordConfirm.vue";
 	import {Post} from '../../utils/APIMethods'
 	import { EndPoints } from "../../data/EndPoints";
 	import { formValdaitor } from "../../utils/FormValdation";
 	import { emptyObject } from "../../utils/objects";
-	import NameInput from "../inputs/NameInput.vue";
-	import PasswordConfirm from "../inputs/PasswordConfirm.vue";
+	import { classes } from "../../data/classes";
+	import {useRouter} from "vue-router"
+
+	const router = useRouter()
+	const errors = ref({});
+	const loading = ref(false);
 
 	const form = ref({
 		name: "",
@@ -37,9 +43,6 @@
 		password_confirmation:""
 	});
 
-	const errors = ref({});
-	const loading = ref(false);
-
 	const rules = {
 		name: 'required|min:4|max:100',
 		email: 'required|min:4|email|max:100',
@@ -47,23 +50,20 @@
 		password_confirmation: 'required|min:4|match:password|max:100'
 	}
 
-	const validateInput = (event) => {	
-		console.log(form.value);
-		
+	const validateInput = (event) => {			
 		const {name} = event.target
 		errors.value = formValdaitor.inputValdaite(rules, form.value, name) 
 	}
 
 	const submitForm = async () => {
-		errors.value = formValdaitor.formValdaite(form.value, rules)  
-		console.log(errors.value);
-		
+		errors.value = formValdaitor.formValdaite(form.value, rules)  		
 		if(!emptyObject(errors.value)) return
 	
 		loading.value = true;
 
 		try {
-			const data = await Post(EndPoints.register, form.value)   
+			await Post(EndPoints.register, form.value)   
+			router.push('/login')
 		} catch (err) {		
 			errors.value = err.errors;		
 			loading.value = false;
@@ -72,24 +72,3 @@
 		loading.value = false;
 	}
 </script>
-
-<style scoped>
-.register-form {
-  max-width: 400px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-.field {
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-}
-small {
-  color: red;
-}
-button {
-  padding: 10px;
-  cursor: pointer;
-}
-</style>

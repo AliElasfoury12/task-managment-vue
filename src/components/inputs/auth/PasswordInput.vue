@@ -2,15 +2,15 @@
     <Input
         :errors="errors" 
         :form="form" 
-        type="email"
-        label="Email" 
-        name="email" 
-        placeholder="Enter Your Email"  
+        type="password"
+        label="Password" 
+        name="password" 
+        placeholder="Enter Your Password"  
     />
 </template>
 
 <script setup>
-    import Input from './Input.vue'
+    import Input from '../Input.vue'
     const {form, errors} = defineProps({
         form: Object,
         errors: Object
