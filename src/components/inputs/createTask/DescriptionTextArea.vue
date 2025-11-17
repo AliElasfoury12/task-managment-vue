@@ -1,8 +1,7 @@
 <script setup>
     import { classes } from '../../../data/classes';
-    const {form, errors} = defineProps({
+    const {form} = defineProps({
         form: Object,
-        errors: Object
     })    
 </script>
 

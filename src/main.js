@@ -8,6 +8,4 @@ import './assets/main.css'
 api.baseURL = "http://localhost:8000/api/"
 api.token = "1|2draKF4gROAk8XUoDcMgBYwD1zV1VOfREoWD9jUY7f59956c"
 
-const app = createApp(App)
-app.use(router)
-app.mount('#app')
+createApp(App).use(router).mount('#app')

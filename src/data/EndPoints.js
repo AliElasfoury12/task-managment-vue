@@ -1,4 +1,5 @@
 export const EndPoints = {
     login: 'login',
-    register: 'register'
+    register: 'register',
+    createTask: 'tasks'
 }

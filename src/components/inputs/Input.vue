@@ -3,7 +3,10 @@ import { classes } from '../../data/classes';
 
     const {form, errors} = defineProps({
         form: Object,
-        errors: Object,
+        errors: {
+            type: Object,
+            default: {}
+        },
         name: String,
         type: String,
         label: String,

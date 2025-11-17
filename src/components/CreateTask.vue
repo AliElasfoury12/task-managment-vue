@@ -3,13 +3,13 @@
         @submit.prevent="submitTask" 
         :class="classes.form">
 
-        <TitleInput :form="task" :errors="errors??{}" />
+        <TitleInput :form="form" :errors="errors" />
    
-        <DescriptionTextArea :form="task" :errors="errors??{}" />
+        <DescriptionTextArea :form="form" :errors="errors" />
 
-        <PrioritySelect :form="task" :errors="errors??{}"/>
+        <PrioritySelect :form="form" :errors="errors"/>
     
-        <DueDateInput :form="task" :errors="errors??{}" />
+        <DueDateInput :form="form" :errors="errors" />
 
         <button :class="classes.submitButton">
             Create Task
@@ -19,30 +19,44 @@
 </template>
 
 <script setup>
-    import { reactive } from 'vue'
+    import { ref } from 'vue'
     import TitleInput from './inputs/createTask/TitleInput.vue'
     import { classes } from '../data/classes'
     import DescriptionTextArea from './inputs/createTask/DescriptionTextArea.vue'
     import PrioritySelect from './inputs/createTask/PrioritySelect.vue'
     import DueDateInput from './inputs/createTask/DueDateInput.vue'
+    import { Post } from '../utils/APIMethods'
+    import { EndPoints } from '../data/EndPoints'
+    import { formValdaitor } from '../utils/FormValdation'
+    import { emptyObject } from '../utils/objects'
 
-    const task = reactive({
+    const task = {
         title: '',
         description: '',
         priority: 'low',
         due_date: ''
-    })
+    }
 
-    // Emit event
-    const emit = defineEmits(['create-task'])
+    const form = ref(task)
+    const errors = ref({})
 
-    function submitTask() {
-        emit('create-task', { ...task })
+    const rules = {
+        title: 'required|max:100',
+        description: 'max:200',
+        priority: 'required',
+        // due_date: 'date',
+        due_date:''
+    }
 
-        // Clear form
-        task.title = ''
-        task.description = ''
-        task.priority = 'low'
-        task.due_date = ''
+    async function submitTask() {
+        errors.value = formValdaitor.formValdaite(form.value, rules)                        
+        if(!emptyObject(errors.value)) return
+
+        try {
+            await Post(EndPoints.createTask, form.value)
+            form.value = task
+        } catch (err) {
+            errors.value = err
+        }
     }
 </script>
