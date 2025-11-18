@@ -2,7 +2,8 @@
     import Input from '../Input.vue'
     const {form} = defineProps({
         form: Object,
-        errors: Object
+        errors: Object,
+        label: String
     })    
 </script>
 
@@ -11,7 +12,7 @@
         :errors="errors" 
         :form="form" 
         type="date"
-        label="Due Date" 
+        :label="label ? 'Due Date' : null" 
         name="due_date" 
     />
 </template>

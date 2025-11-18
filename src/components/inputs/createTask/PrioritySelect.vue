@@ -2,12 +2,13 @@
     import { classes } from '../../../data/classes';
     const {form} = defineProps({
         form: Object,
+        label: String
     })    
 </script>
 
 <template>
     <div>
-        <label :class="classes.label">Priority</label>
+        <label v-if="label" :class="classes.label">{{ label }}</label>
         <select v-model="form.priority" class="border p-2 w-full rounded">
         <option value="low">Low</option>
         <option value="medium">Medium</option>

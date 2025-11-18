@@ -16,7 +16,7 @@ import { classes } from '../../data/classes';
 
 <template>
     <div class="flex flex-col items-start gap-1" >
-        <label :class="classes.label" >
+        <label :class="classes.label" v-if="label" >
             {{label}}
         </label>
         <input 

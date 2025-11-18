@@ -3,13 +3,13 @@
         @submit.prevent="submitTask" 
         :class="classes.form">
 
-        <TitleInput :form="form" :errors="errors" />
+        <TitleInput :form="form" label="Title" :errors="errors" />
    
-        <DescriptionTextArea :form="form" :errors="errors" />
+        <DescriptionTextArea :form="form" label="Description" :errors="errors" />
 
-        <PrioritySelect :form="form" :errors="errors"/>
+        <PrioritySelect :form="form" label="Priority" :errors="errors"/>
     
-        <DueDateInput :form="form" :errors="errors" />
+        <DueDateInput :form="form" label="DueDate" :errors="errors" />
 
         <button :class="classes.submitButton">
             Create Task
@@ -41,11 +41,10 @@
     const errors = ref({})
 
     const rules = {
-        title: 'required|max:100',
-        description: 'max:200',
+        title: 'required|max:150',
+        description: 'max:400',
         priority: 'required',
-        // due_date: 'date',
-        due_date:''
+        due_date: /*'date'*/"",
     }
 
     async function submitTask() {
