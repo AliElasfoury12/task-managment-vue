@@ -29,6 +29,10 @@
     import { EndPoints } from '../data/EndPoints'
     import { formValdaitor } from '../utils/FormValdation'
     import { emptyObject } from '../utils/objects'
+    import { useTaskStore } from '../stores/taskStore'
+    import { storeToRefs } from 'pinia'
+
+    const taskStore = useTaskStore()
 
     const task = {
         title: '',
@@ -40,6 +44,7 @@
     const form = ref(task)
     const errors = ref({})
 
+
     const rules = {
         title: 'required|max:150',
         description: 'max:400',
@@ -47,14 +52,16 @@
         due_date: /*'date'*/"",
     }
 
-    async function submitTask() {
+    const submitTask = async () => {
         errors.value = formValdaitor.formValdaite(form.value, rules)                        
         if(!emptyObject(errors.value)) return
-
         try {
-            await Post(EndPoints.createTask, form.value)
+            const data = await Post(EndPoints.createTask, form.value)
+            taskStore.addTask(data.task)
             form.value = task
         } catch (err) {
+            console.log(err);
+            
             errors.value = err
         }
     }

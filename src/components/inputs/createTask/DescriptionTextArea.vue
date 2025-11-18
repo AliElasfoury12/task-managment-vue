@@ -11,7 +11,7 @@
         <label v-if="label" :class="classes.label">{{label}}</label>
         <textarea
         v-model="form.description"
-        class="border p-2 w-full rounded resize-none h-20"
+        class="p-2 w-full rounded resize-none h-20"
         placeholder="Enter description"
         ></textarea>
     </div>

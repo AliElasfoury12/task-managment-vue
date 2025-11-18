@@ -17,14 +17,13 @@ class API {
 
     async send_request (URL, options) {
         let res = await fetch(this.baseURL+URL, options)
-        const status = res.status
-        res = await res.json()
-        if(res.new_token) this.updateToken(res.new_token)
-
-        if(status !== 200){
+     
+        if(!res.ok){
             console.log(URL, res);
             throw res
         }else {
+            res = await res.json()
+            if(res.new_token) this.updateToken(res.new_token)
             console.log(URL, res);
             return res
         }
@@ -69,7 +68,7 @@ class API {
         return this.request(URL, 'PUT', body, headers)
     }
 
-    PATCH(URL, body,  headers = {}) {
+    PATCH(URL, body,  headers = {}) {        
         return this.request(URL, 'PATCH', body, headers)
     }
     

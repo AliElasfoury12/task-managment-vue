@@ -8,5 +8,6 @@ import {createPinia} from 'pinia'
 
 api.baseURL = "http://localhost:8000/api/"
 api.token = "1|2draKF4gROAk8XUoDcMgBYwD1zV1VOfREoWD9jUY7f59956c"
+localStorage.setItem('token', api.token)
 
 createApp(App).use(router).use(createPinia()).mount('#app')

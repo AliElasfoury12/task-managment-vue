@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { EndPoints } from "../data/EndPoints";
-import { Patch, Get } from "../utils/APIMethods";
+import { Patch, Get, Delete } from "../utils/APIMethods";
 
 export const useTaskStore = defineStore("taskStore", {
     state: () => ({
@@ -8,16 +8,22 @@ export const useTaskStore = defineStore("taskStore", {
         isEditing: false,
         editingTaskId: 0,
         loading: false,
+        pendingTasks: 0,
+        totalTasks: 0,
+        completedTasks: 0,
         errors: [],
-        editingTask: null, // <-- holds the task currently being edited
+        priority : ['low','medium', 'high']
     }),
 
     actions: {
         async fetchTasks() {
             this.loading = true;
             try {
-                const data = await Get(EndPoints.getTasks) || []
-                this.tasks = data.tasks
+                const data = await Get(EndPoints.getTasks) 
+                this.tasks = data.tasks || []
+                this.totalTasks = data.total_tasks_count
+                this.pendingTasks = data.pending_tasks_count
+                this.completedTasks = data.completed_tasks_count
             } catch (err) {
                 this.errors.push("Failed to load tasks")
             } finally {
@@ -25,12 +31,8 @@ export const useTaskStore = defineStore("taskStore", {
             }
         },
 
-        startEditing(task) {
-            this.editingTask = { ...task }; // make copy for safe editing
-        },
-
-        cancelEditing() {
-            this.editingTask = null;
+        addTask(task) {
+            this.tasks.unshift(task)
         },
 
         setIsEditing(state) {
@@ -41,26 +43,35 @@ export const useTaskStore = defineStore("taskStore", {
             this.editingTaskId = id
         },
 
-        async saveEditing() {
-            if (!this.editingTask) return;
+        async updateTask(editingTask) {
+            if (!editingTask) return;
 
-            const data = this.editingTask;
+            try {
+                await Patch(EndPoints.editTask(editingTask.id), editingTask);
 
-            await Patch(EndPoints.editTask(data.id), data);
+                const index = this.tasks.findIndex(t => t.id === editingTask.id);
+                if (index !== -1) this.tasks[index] = { ...editingTask };
 
-            // update the local tasks array
-            const index = this.tasks.findIndex(t => t.id === data.id);
-            if (index !== -1) {
-                this.tasks[index] = { ...data };
+                this.isEditing = false
+                this.editingTaskId = null
+
+            } catch (err) {
+                console.error("Failed to update task", err);
             }
+        },
 
-            this.editingTask = null;
+        async deleteTask(id) {
+            await Delete(EndPoints.deleteTask(id));
+            this.tasks = this.tasks.filter(task => task.id !== id);
+            alert('task deleted successfully')
+            this.totalTasks--
         },
 
         async toggleComplete(task) {
-            await Patch(EndPoints.editTask(task.id), {
-                completed: task.completed,
-            });
-        }
+            task.priority = this.priority[task.priority]
+            await Patch(EndPoints.editTask(task.id), task)
+            this.pendingTasks--
+        },
+
     }
 })

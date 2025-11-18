@@ -1,23 +1,14 @@
 <script setup>
-    import { EndPoints } from '../data/EndPoints';
-    import {Patch} from '../utils/APIMethods'
     import { useTaskStore } from '../stores/taskStore'
+    import { storeToRefs } from 'pinia';
 
     const taskStore = useTaskStore()
-
+    const {priority} = storeToRefs(taskStore)
+    
     const {task} = defineProps({
         task: Object
     })
 
-    const priority = ['low','medium', 'high']
-
-    const toggleComplete = async (task) => {
-        try {
-            await Patch(EndPoints.editTask(task.id), { completed: task.completed })
-        } catch (err) {
-            console.error("Failed to update task", err);
-        }
-    }
     const priorityClass = () => {
         switch (priority[task.priority]) {
             case 'high':
@@ -29,14 +20,20 @@
         }
     }
 
+    const toggleComplete = () => {
+        taskStore.toggleComplete(task)
+    }
+
     const startEdit = () => {        
        taskStore.setIsEditing(true)
        taskStore.setEditingTaskId(task.id)
     }
 
     const deleteTask = () => {
-
+        alert('are you sure?')
+        taskStore.deleteTask(task.id)
     }
+
 </script>
 
 <template >
@@ -66,4 +63,3 @@
         <input type="checkbox" v-model="task.completed" @change="toggleComplete(task)" />
     </div>
 </template>
-
