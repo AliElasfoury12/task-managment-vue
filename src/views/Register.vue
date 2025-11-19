@@ -21,15 +21,15 @@
 
 <script setup>
 	import { ref } from "vue";
-	import NameInput from "../inputs/auth/NameInput.vue";
-	import EmailInput from "../inputs/auth/EmailInput.vue";
-	import PasswordInput from "../inputs/auth/PasswordInput.vue";
-	import PasswordConfirm from "../inputs/auth/PasswordConfirm.vue";
-	import {Post} from '../../utils/APIMethods'
-	import { EndPoints } from "../../data/EndPoints";
-	import { formValdaitor } from "../../utils/FormValdation";
-	import { emptyObject } from "../../utils/objects";
-	import { classes } from "../../data/classes";
+	import NameInput from "../components/inputs/auth/NameInput.vue";
+	import EmailInput from "../components/inputs/auth/EmailInput.vue";
+	import PasswordInput from "../components/inputs/auth/PasswordInput.vue";
+	import PasswordConfirm from "../components/inputs/auth/PasswordConfirm.vue";
+	import {Post} from '../utils/APIMethods'
+	import { EndPoints } from "../data/EndPoints";
+	import { formValdaitor } from "../utils/FormValdation";
+	import { emptyObject } from "../utils/objects";
+	import { classes } from "../data/classes";
 	import {useRouter} from "vue-router"
 
 	const router = useRouter()

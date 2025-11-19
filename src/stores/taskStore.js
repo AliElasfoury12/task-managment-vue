@@ -62,8 +62,9 @@ export const useTaskStore = defineStore("taskStore", {
 
         async deleteTask(id) {
             await Delete(EndPoints.deleteTask(id));
-            this.tasks = this.tasks.filter(task => task.id !== id);
-            alert('task deleted successfully')
+            this.tasks = this.tasks.filter(task => task.id !== id)
+            if(task.completed == 1) this.completedTasks--
+            else this.pendingTasks--
             this.totalTasks--
         },
 

@@ -9,8 +9,8 @@
 </template>
 
 <script setup>
-import CreateTask from './CreateTask.vue';
-import NavBar from './NavBar.vue';
-import ShowTasks from './ShowTasks.vue';
+import CreateTask from '../components/CreateTask.vue';
+import NavBar from '../components/NavBar.vue';
+import ShowTasks from '../components/ShowTasks.vue';
 
 </script>

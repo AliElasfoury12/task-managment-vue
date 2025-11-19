@@ -1,9 +1,12 @@
 <script setup>
     import { useTaskStore } from '../stores/taskStore'
     import { storeToRefs } from 'pinia';
+import ConfirmDelete from './ConfirmDelete.vue';
+import { ref } from 'vue';
 
     const taskStore = useTaskStore()
     const {priority} = storeToRefs(taskStore)
+    const showConfirm = ref(false)
     
     const {task} = defineProps({
         task: Object
@@ -30,7 +33,6 @@
     }
 
     const deleteTask = () => {
-        alert('are you sure?')
         taskStore.deleteTask(task.id)
     }
 
@@ -52,11 +54,17 @@
             class="px-2 py-1 text-sm bg-blue-500 text-white rounded">
             Edit
         </button>
+
         <button 
-            @click="deleteTask"
+            @click="showConfirm = true"
             class="px-2 py-1 text-sm bg-red-600 text-white rounded">
             Delete
         </button>
+        <ConfirmDelete 
+            v-if="showConfirm" 
+            @confirm="deleteTask" 
+            @cancel="showConfirm = false" 
+        />
     </div>
 
     <div>

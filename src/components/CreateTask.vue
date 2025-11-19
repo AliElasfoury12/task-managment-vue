@@ -7,9 +7,11 @@
    
         <DescriptionTextArea :form="form" label="Description" :errors="errors" />
 
-        <PrioritySelect :form="form" label="Priority" :errors="errors"/>
+        <div class="flex w-full gap-3 items-center">
+            <PrioritySelect class="w-1/2" :form="form" label="Priority" :errors="errors"/>
     
-        <DueDateInput :form="form" label="DueDate" :errors="errors" />
+            <DueDateInput class="w-1/2" :form="form" label="DueDate" :errors="errors" />
+        </div>
 
         <button :class="classes.submitButton">
             Create Task

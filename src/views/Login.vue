@@ -17,13 +17,13 @@
 
 <script setup>
 	import { ref } from "vue";
-	import EmailInput from "../inputs/auth/EmailInput.vue";
-	import PasswordInput from "../inputs/auth/PasswordInput.vue";
-	import {Post} from '../../utils/APIMethods'
-	import { EndPoints } from "../../data/EndPoints";
-	import { formValdaitor } from "../../utils/FormValdation";
-	import { emptyObject } from "../../utils/objects";
-	import { classes } from "../../data/classes";
+	import EmailInput from "../components/inputs/auth/EmailInput.vue";
+	import PasswordInput from "../components/inputs/auth/PasswordInput.vue";
+	import {Post} from '../utils/APIMethods'
+	import { EndPoints } from "../data/EndPoints";
+	import { formValdaitor } from "../utils/FormValdation";
+	import { emptyObject } from "../utils/objects";
+	import { classes } from "../data/classes";
 
 	const form = ref({
 	email: "",
